@@ -1,20 +1,25 @@
 from moviepy.editor import *
 import moviepy
-#inputs are asked
-partes=input("How many cuts do you want?")
-corte=input("What percentage would you like to cut?[0-90](%)")
-blanegre=input("black and white?")
+#preguntamos videos y musica
+partes=input("how many cuts do you want?")
+corte=input("what percentage would you like to cut?[0-90](%)")
+blanegre=input("black and white?[yes or no]")
+musi=input("do you want music?"[yes or no])
 
+#importamos musica
 
-#import music
-
-musiclip = AudioFileClip("music1.mp3")
+if musi == "yes":
+    musiclip = AudioFileClip("music1.mp3")
 
 corte=(float(corte)/2)/100
 
-#import video
-clip = (VideoFileClip("1.mp4", audio=False))
-if blanegre == "si":
+#importamos video
+if musi == "yes":
+    clip = (VideoFileClip("1.mp4", audio=False))
+else:
+    clip = (VideoFileClip("1.mp4", audio=True))
+
+if blanegre == "yes":
     clip=moviepy.video.fx.all.blackwhite(clip, RGB=None, preserve_luminosity=True)
 
 
@@ -28,15 +33,17 @@ for parte in range(int(partes)):
     if contador==0:
         final_clip=clip1
     else:
-        clip1=clip1.crossfadein(1.0)
+       
         final_clip = concatenate_videoclips([final_clip, clip1])
+
     contador=1
 
 dura = final_clip.duration
-final_clip = final_clip.set_audio(musiclip)
-final_clip = final_clip.set_end(dura)
-if final_clip.duration > musiclip.duration:
-    final_clip = final_clip.set_end(float(musiclip.duration))
-    print("video longer than music, the clip is cut, it will now last: " + str(musiclip.duration))
+if musi == "si":
+    final_clip = final_clip.set_audio(musiclip)
+    final_clip = final_clip.set_end(dura)
+    if final_clip.duration > musiclip.duration:
+        final_clip = final_clip.set_end(float(musiclip.duration))
+        print("video longer than music, cut, it now lasts: " + str(musiclip.duration))
 
 final_clip.write_videofile("remixed.mp4")
