@@ -1,12 +1,12 @@
 from moviepy.editor import *
 import moviepy
-#preguntamos videos y musica
-partes=input("cuantos videos quieres?")
-musics=input("y cuantas canciones (de 1 a 5)?")
-blanegre=input("blanco y negro?")
-resum=input("resumido?")
+#we ask for input
+partes=input("How many videos do you want?")
+musics=input("How many songs (1 to 5)?")
+blanegre=input("Black & White?")
+resum=input("Shortened?")
 
-#importamos musica
+#music import
 musiclips={}
 musiclips[1] = AudioFileClip("music1.mp3")
 if int(musics) > 1:
@@ -19,9 +19,9 @@ if int(musics) > 4:
     musiclips[5] = AudioFileClip("music5.mp3")
 
 
-#importamos video
+#video import
 clip = (VideoFileClip("1.mp4", audio=False))
-if blanegre == "si":
+if blanegre == "yes":
     clip=moviepy.video.fx.all.blackwhite(clip, RGB=None, preserve_luminosity=True)
 
 
